@@ -1,16 +1,17 @@
 import { Image, StyleSheet, Platform, View, Text } from "react-native";
 
 import ParallaxScrollView from "@/components/ParallaxScrollView";
-import Categorys from "@/components/Home/Categorys";
+
 import Header from "@/components/Home/Header";
 import SpecialEvents from "@/components/Home/SpecialEvents";
 import PopulaireEvents from "@/components/Home/PopulaireEvents";
+import Categories from "@/components/Home/Categories";
 
 export default function HomeScreen() {
   return (
     <ParallaxScrollView>
       <Header />
-      <Categorys />
+      <Categories />
       <SpecialEvents />
       <PopulaireEvents />
     </ParallaxScrollView>

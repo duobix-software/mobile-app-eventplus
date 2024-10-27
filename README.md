@@ -1,50 +1,44 @@
-# Welcome to your Expo app 👋
+# Event Booking Mobile App
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+**Description:**  
+A mobile application for browsing, booking, and managing events. The app allows users to explore various event categories, book tickets, and receive real-time notifications. It's built using React Native with Expo, and it connects to a Laravel backend for data management.
 
-## Get started
+## Table of Contents
+1. [Project Overview](#project-overview)
+2. [Features](#features)
+3. [Installation](#installation)
+4. [Environment Variables](#environment-variables)
+5. [Usage](#usage)
+6. [API Endpoints](#api-endpoints)
+7. [Technologies Used](#technologies-used)
+8. [Screenshots](#screenshots)
+9. [Contributing](#contributing)
+10. [License](#license)
 
-1. Install dependencies
+## Project Overview
 
-   ```bash
+This project is a cross-platform mobile app built for browsing and booking events. It allows users to:
+- Browse events by category
+- View detailed event information
+- Book event tickets
+- Scan event tickets using QR codes or NFC
+- Receive real-time notifications for booking confirmations and event updates
+
+## Features
+
+- **Event Browsing:** Explore events by categories like sports, music, business, and more.
+- **Real-time Notifications:** Users receive notifications for successful bookings and reminders.
+- **Ticket Scanning:** QR code and NFC integration for easy ticket verification at events.
+- **Event Details:** See full event descriptions, images, and location.
+- **User Profile:** Manage user account and view booking history.
+
+## Installation
+
+Follow these steps to run the project locally:
+
+1. Clone the repository:
+   ``` bash
+   git clone https://github.com/your-username/your-repo-name.git
    npm install
+   expo start
    ```
-
-2. Start the app
-
-   ```bash
-    npx expo start
-   ```
-
-In the output, you'll find options to open the app in a
-
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
-
-```bash
-npm run reset-project
-```
-
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
-
-## Learn more
-
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.

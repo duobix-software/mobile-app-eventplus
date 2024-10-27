@@ -4,11 +4,11 @@ import { ThemedView } from "../ThemedView";
 import { ThemedText } from "../ThemedText";
 import { Avatar } from "react-native-paper";
 import { Link } from "expo-router";
-import { useQuery } from "react-query";
 import { ActivityIndicator, MD2Colors } from "react-native-paper";
+import { useQuery } from "react-query";
 import { getData } from "../../utils/api";
 
-type Category = {
+type Categorie = {
   slug: string;
   name: string;
   descreption: string;
@@ -18,31 +18,31 @@ type Category = {
   event_url: string;
 };
 
-export default function Categorys() {
+export default function Categories() {
   const { data, error, isLoading } = useQuery({
-    queryKey: ["categorys"],
+    queryKey: ["categories"],
     queryFn: () => getData("categories"),
   });
 
   return (
     <ThemedView>
       <View className="flex flex-row justify-between">
-        <ThemedText type="subtitle">Categorys</ThemedText>
-        <Link href="/home/categorys">
+        <ThemedText type="subtitle">Categories</ThemedText>
+        <Link href="/home/categories">
           <ThemedText className="text-sm">View All</ThemedText>
         </Link>
       </View>
       {isLoading ? (
         <ActivityIndicator animating={true} color={MD2Colors.red800} />
-      ) : (
+      ) : data ? (
         <ScrollView
           horizontal={true}
           showsHorizontalScrollIndicator={false}
           className="flex gap-4"
         >
-          {data.map((item: Category) => (
+          {data.map((item: Categorie) => (
             <View key={item.slug} className="w-16">
-              <Link href={`/home/categorys/${item.slug}`} asChild>
+              <Link href={`/home/categories/${item.slug}`} asChild>
                 <TouchableOpacity>
                   <Avatar.Image
                     size={50}
@@ -61,6 +61,8 @@ export default function Categorys() {
             </View>
           ))}
         </ScrollView>
+      ) : (
+        <ThemedText>No categories found</ThemedText>
       )}
     </ThemedView>
   );
