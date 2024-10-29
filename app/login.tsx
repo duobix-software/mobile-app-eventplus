@@ -4,15 +4,28 @@ import React from "react";
 import { Button, TextInput } from "react-native-paper";
 import { View } from "react-native";
 import { useForm, Controller } from "react-hook-form";
+import { useMutation } from "react-query";
+import { postData } from "@/utils/api";
 
 export default function Login() {
   const [passwordIcon, setPasswordIcon] = React.useState("eye");
   const { control, handleSubmit } = useForm();
 
-  const onSubmit = (data: any) => {
-    console.log(data);
-  };
+  const { mutate, isLoading, error } = useMutation(
+    (data) => postData("login", data),
+    {
+      onSuccess: (data) => {
+        console.log("Login successful:", data);
+      },
+      onError: (error) => {
+        console.error("Login error:", error);
+      },
+    }
+  );
 
+  const onSubmit = (data: any) => {
+    mutate(data);
+  };
   const toggleIcon = () => {
     setPasswordIcon((prevIcon) => (prevIcon === "eye" ? "eye-off" : "eye"));
   };
@@ -59,6 +72,7 @@ export default function Login() {
           mode="contained"
           className="mx-10 mb-2"
           onPress={handleSubmit(onSubmit)}
+          loading={isLoading}
         >
           Login
         </Button>

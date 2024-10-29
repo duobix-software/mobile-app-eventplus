@@ -17,3 +17,20 @@ export async function getDataByID(endpoint, id) {
 
   return response.json();
 }
+
+export async function postData(endpoint, data) {
+  const apiUrl = process.env.EXPO_PUBLIC_API_URL;
+  const response = await fetch(`${apiUrl}${endpoint}`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  });
+
+  if (!response.ok) {
+    throw new Error("Failed to submit data");
+  }
+
+  return response.json();
+}

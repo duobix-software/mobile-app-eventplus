@@ -4,18 +4,32 @@ import React from "react";
 import { Button, TextInput } from "react-native-paper";
 import { View } from "react-native";
 import { useForm, Controller } from "react-hook-form";
+import { useMutation } from "react-query";
+import { postData } from "@/utils/api";
 
 export default function Register() {
-    const [passwordIcon, setPasswordIcon] = React.useState("eye");
-    const { control, handleSubmit } = useForm();
+  const [passwordIcon, setPasswordIcon] = React.useState("eye");
+  const { control, handleSubmit } = useForm();
 
-    const onSubmit = (data: any) => {
-      console.log(data);
-    };
+  const { mutate, isLoading, error } = useMutation(
+    (data) => postData("register", data),
+    {
+      onSuccess: (data) => {
+        console.log("Register successful:", data);
+      },
+      onError: (error) => {
+        console.error("Register error:", error);
+      },
+    }
+  );
 
-    const toggleIcon = () => {
-      setPasswordIcon((prevIcon) => (prevIcon === "eye" ? "eye-off" : "eye"));
-    };
+  const onSubmit = (data: any) => {
+    mutate(data);
+  };
+
+  const toggleIcon = () => {
+    setPasswordIcon((prevIcon) => (prevIcon === "eye" ? "eye-off" : "eye"));
+  };
   return (
     <View className="h-full flex justify-center px-4">
       <View>
@@ -106,6 +120,7 @@ export default function Register() {
           mode="contained"
           className="mx-10 mb-2"
           onPress={handleSubmit(onSubmit)}
+          loading={isLoading}
         >
           Register
         </Button>
