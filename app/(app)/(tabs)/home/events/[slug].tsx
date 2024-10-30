@@ -1,11 +1,11 @@
 import { SafeAreaView, Image, Text, View } from "react-native";
 import React from "react";
 import { router, useLocalSearchParams } from "expo-router";
-import { useQuery } from "react-query";
 import { getDataByID } from "../../../../utils/api";
 import { ThemedText } from "@/components/ThemedText";
 import { ActivityIndicator, Button, MD2Colors } from "react-native-paper";
 import { TabBarIcon } from "@/components/navigation/TabBarIcon";
+import { useQuery } from "@tanstack/react-query";
 
 export default function event() {
   const { slug } = useLocalSearchParams();
