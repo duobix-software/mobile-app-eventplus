@@ -22,16 +22,16 @@ export default function Login() {
     formState: { errors },
   } = useForm({
     defaultValues: {
-      username: "",
-      password: "",
+      username: process.env.NODE_ENV === "production" ? "" : "user@user.com",
+      password: process.env.NODE_ENV === "production" ? "" : "password",
     },
   });
 
   const { mutate, isPending, isError, isSuccess, error, data } = useMutation({
     mutationFn: (formData: Credentials) => login(formData),
     onSuccess: (data) => {
-      signIn(data);
-      router.replace("/(tabs)/home")
+      signIn(data.token);
+      router.replace("/home");
     },
     onError: (error: AxiosError) => {
       if (error.response?.status !== 422) return;
@@ -56,8 +56,8 @@ export default function Login() {
 
   return (
     <View className="h-full flex justify-center px-4">
-      <View className="mb-2 space-y-2">
-        <View className="space-y-1">
+      <View className="mb-4">
+        <View className="mb-2">
           <Controller
             control={control}
             rules={{ required: true }}
@@ -72,12 +72,12 @@ export default function Login() {
               />
             )}
           />
-          {errors.username?.message?.length && (
-            <Text className="text-red-600">{errors.username.message}</Text>
-          )}
+          {/* {errors.username?.message?.length && (
+            <Text className="text-red-600 mt-1">{errors.username.message}</Text>
+          )} */}
         </View>
 
-        <View className="space-y-1">
+        <View className="mb-2">
           <Controller
             control={control}
             rules={{ required: true }}
@@ -95,9 +95,9 @@ export default function Login() {
               />
             )}
           />
-          {errors.password?.message?.length && (
-            <Text className="text-red-600">{errors.password.message}</Text>
-          )}
+          {/* {errors.password?.message?.length && (
+            <Text className="text-red-600 mt-1">{errors.password.message}</Text>
+          )} */}
         </View>
 
         <Button

@@ -47,6 +47,7 @@ export default function MyBookings() {
       Alert.alert("Error reading from NFC", JSON.stringify(e));
     }
   };
+  
   return (
     <View className="flex justify-center items-center h-full">
       <Button

@@ -1,6 +1,5 @@
-import { Tabs } from "expo-router";
 import React from "react";
-
+import { Tabs } from "expo-router";
 import { TabBarIcon } from "@/components/navigation/TabBarIcon";
 import { Colors } from "@/constants/Colors";
 import { useColorScheme } from "@/hooks/useColorScheme";
@@ -27,7 +26,7 @@ export default function TabLayout() {
           ),
         }}
       />
-      <Tabs.Screen
+      {/* <Tabs.Screen
         name="search"
         options={{
           title: "Explore",
@@ -38,8 +37,8 @@ export default function TabLayout() {
             />
           ),
         }}
-      />
-      <Tabs.Screen
+      /> */}
+      {/* <Tabs.Screen
         name="mybookings"
         options={{
           title: "My Bookings",
@@ -50,8 +49,8 @@ export default function TabLayout() {
             />
           ),
         }}
-      />
-      <Tabs.Screen
+      /> */}
+      {/* <Tabs.Screen
         name="notification"
         options={{
           title: "Notifications",
@@ -62,8 +61,8 @@ export default function TabLayout() {
             />
           ),
         }}
-      />
-      <Tabs.Screen
+      /> */}
+      {/* <Tabs.Screen
         name="settings"
         options={{
           title: "Settings",
@@ -74,7 +73,7 @@ export default function TabLayout() {
             />
           ),
         }}
-      />
+      /> */}
     </Tabs>
   );
 }

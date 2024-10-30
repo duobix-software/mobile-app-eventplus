@@ -1,8 +1,24 @@
-import { Link } from "expo-router";
+import { useSession } from "@/context/session-ctx";
+import { Link, Redirect } from "expo-router";
 import { Text } from "react-native-paper";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function Index() {
+  const { isLoading, session } = useSession();
+
+  // here we can return the splash screen
+  if (isLoading) {
+    return (
+      <SafeAreaView>
+        <Text>Loading...</Text>
+      </SafeAreaView>
+    );
+  }
+
+  if (!session) {
+    return <Redirect href="/login" />;
+  }
+
   return (
     <SafeAreaView>
       <Text>
@@ -15,9 +31,8 @@ export default function Index() {
         <Link href="/_sitemap">Sitemap</Link>
       </Text>
       <Text>
-        <Link href="/login">Login</Link>
+        <Link href="/home">home</Link>
       </Text>
-      <Text>Home screen.</Text>
     </SafeAreaView>
   );
 }

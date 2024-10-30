@@ -9,10 +9,10 @@ import React from "react";
 import { ThemedView } from "../ThemedView";
 import { ThemedText } from "../ThemedText";
 import { Card } from "react-native-paper";
-import { useQuery } from "react-query";
 import { ActivityIndicator, MD2Colors } from "react-native-paper";
 import { getData } from "../../utils/api";
 import { Link } from "expo-router";
+import { useQuery } from "@tanstack/react-query";
 
 export default function SpecialEvents() {
   const { data, error, isLoading } = useQuery({

@@ -1,27 +1,16 @@
-import { ScrollView, TouchableOpacity, View } from "react-native";
 import React from "react";
-import { ThemedView } from "../ThemedView";
-import { ThemedText } from "../ThemedText";
-import { Avatar } from "react-native-paper";
 import { Link } from "expo-router";
-import { ActivityIndicator, MD2Colors } from "react-native-paper";
-import { useQuery } from "react-query";
-import { getData } from "../../utils/api";
-
-type Categorie = {
-  slug: string;
-  name: string;
-  descreption: string;
-  logo: string;
-  banner: string;
-  tag_url: string;
-  event_url: string;
-};
+import { useQuery } from "@tanstack/react-query";
+import { ScrollView, TouchableOpacity, View } from "react-native";
+import { ActivityIndicator, MD2Colors, Avatar } from "react-native-paper";
+import { getCategories } from "@/services/api/categories";
+import { ThemedView } from "@/components/ThemedView";
+import { ThemedText } from "@/components/ThemedText";
 
 export default function Categories() {
-  const { data, error, isLoading } = useQuery({
+  const { data, isPending, isSuccess } = useQuery({
+    queryFn: getCategories,
     queryKey: ["categories"],
-    queryFn: () => getData("categories"),
   });
 
   return (
@@ -32,23 +21,20 @@ export default function Categories() {
           <ThemedText className="text-sm">View All</ThemedText>
         </Link>
       </View>
-      {isLoading ? (
+
+      {isPending ? (
         <ActivityIndicator animating={true} color={MD2Colors.red800} />
-      ) : data ? (
+      ) : isSuccess ? (
         <ScrollView
           horizontal={true}
           showsHorizontalScrollIndicator={false}
           className="flex gap-4"
         >
-          {data.map((item: Categorie) => (
+          {data.data.map((item) => (
             <View key={item.slug} className="w-16">
               <Link href={`/home/categories/${item.slug}`} asChild>
                 <TouchableOpacity>
-                  <Avatar.Image
-                    size={50}
-                    // source={require("@/assets/images/icon.png")}
-                    source={{ uri: item.logo }}
-                  />
+                  <Avatar.Image size={50} source={{ uri: item.logo }} />
                   <ThemedText
                     className="text-lg"
                     numberOfLines={1}

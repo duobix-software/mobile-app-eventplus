@@ -3,7 +3,7 @@ import React from "react";
 import { ThemedView } from "../ThemedView";
 import { ThemedText } from "../ThemedText";
 import { Card } from "react-native-paper";
-import { useQuery } from "react-query";
+import { useQuery } from "@tanstack/react-query";
 import { ActivityIndicator, MD2Colors } from "react-native-paper";
 import { getData } from "../../utils/api";
 import { Link } from "expo-router";
