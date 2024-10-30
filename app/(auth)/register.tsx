@@ -4,35 +4,35 @@ import React from "react";
 import { Button, TextInput } from "react-native-paper";
 import { View } from "react-native";
 import { useForm, Controller } from "react-hook-form";
-import { useMutation } from "react-query";
+import { useMutation } from "@tanstack/react-query"
 import { postData } from "@/utils/api";
 
 export default function Register() {
-  const [passwordIcon, setPasswordIcon] = React.useState("eye");
-  const { control, handleSubmit } = useForm();
+  // const [passwordIcon, setPasswordIcon] = React.useState("eye");
+  // const { control, handleSubmit } = useForm();
 
-  const { mutate, isLoading, error } = useMutation(
-    (data) => postData("register", data),
-    {
-      onSuccess: (data) => {
-        console.log("Register successful:", data);
-      },
-      onError: (error) => {
-        console.error("Register error:", error);
-      },
-    }
-  );
+  // const { mutate, isLoading, error } = useMutation(
+  //   (data) => postData("register", data),
+  //   {
+  //     onSuccess: (data) => {
+  //       console.log("Register successful:", data);
+  //     },
+  //     onError: (error) => {
+  //       console.error("Register error:", error);
+  //     },
+  //   }
+  // );
 
-  const onSubmit = (data: any) => {
-    mutate(data);
-  };
+  // const onSubmit = (data: any) => {
+  //   mutate(data);
+  // };
 
-  const toggleIcon = () => {
-    setPasswordIcon((prevIcon) => (prevIcon === "eye" ? "eye-off" : "eye"));
-  };
+  // const toggleIcon = () => {
+  //   setPasswordIcon((prevIcon) => (prevIcon === "eye" ? "eye-off" : "eye"));
+  // };
   return (
     <View className="h-full flex justify-center px-4">
-      <View>
+      {/* <View>
         <Controller
           control={control}
           render={({ field: { onChange, onBlur, value } }) => (
@@ -132,7 +132,7 @@ export default function Register() {
         <Link href="/home">
           <ThemedText type="link">Go to home screen!</ThemedText>
         </Link>
-      </View>
+      </View> */}
     </View>
   );
 }
