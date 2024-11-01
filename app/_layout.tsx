@@ -9,7 +9,6 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Slot } from "expo-router";
 import { PaperProvider } from "react-native-paper";
 import { useColorScheme } from "@/hooks/useColorScheme";
-import { SafeAreaProvider } from "react-native-safe-area-context";
 
 const theme = {
   ...DefaultTheme,
@@ -66,9 +65,7 @@ export default function RootLayout() {
       <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
         <PaperProvider theme={theme}>
           <SessionProvider>
-            <SafeAreaProvider>
               <Slot />
-            </SafeAreaProvider>
           </SessionProvider>
         </PaperProvider>
       </ThemeProvider>
