@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "DuobixTicket",
-    "slug": "DuobixTicket",
+    "name": "Event+",
+    "slug": "duobix-eventplus",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
@@ -13,8 +13,7 @@
       "backgroundColor": "#ffffff"
     },
     "ios": {
-      "supportsTablet": true,
-      "bundleIdentifier": "com.abdoudofi.DuobixTicket"
+      "supportsTablet": true
     },
     "android": {
       "adaptiveIcon": {
@@ -23,8 +22,7 @@
       },
       "permissions": [
         "android.permission.NFC"
-      ],
-      "package": "com.abdoudofi.DuobixTicket"
+      ]
     },
     "web": {
       "bundler": "metro",
@@ -41,9 +39,9 @@
     },
     "extra": {
       "eas": {
-        "projectId": "8b82d45c-5971-4e8a-a276-e42792098eb2"
+        "projectId": "00d2754e-217a-4f43-9514-3d0df693a8ce"
       }
     },
-    "owner": "abdoudofi"
+    "owner": "duobix"
   }
 }
