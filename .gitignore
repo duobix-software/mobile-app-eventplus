@@ -19,4 +19,5 @@ web-build/
 .env
 expo-env.d.ts
 package-lock.json
+yarn.lock
 # @end expo-cli
