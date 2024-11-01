@@ -18,4 +18,5 @@ web-build/
 
 .env
 expo-env.d.ts
+package-lock.json
 # @end expo-cli
