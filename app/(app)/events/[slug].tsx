@@ -1,7 +1,7 @@
 import React from "react";
 import { getEventBySlug } from "@/services/api/events";
-import { useQuery } from "@tanstack/react-query";
-import { Link, Redirect, router, useLocalSearchParams } from "expo-router";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { router, useLocalSearchParams } from "expo-router";
 import { Image } from "expo-image";
 import {
   View,
@@ -11,24 +11,53 @@ import {
   ScrollView,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import { Button } from "react-native-paper";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { order } from "@/services/api/order";
+import { OrderRequest } from "@/types/order";
+import { AxiosError } from "axios";
 
 export default function Event() {
-  const { slug } = useLocalSearchParams();
+  const { slug } = useLocalSearchParams<{ slug: string }>();
 
   const { data, isPending, isSuccess, isError, error } = useQuery({
     queryFn: () => getEventBySlug({ urlTemplateParams: { slug } }),
     queryKey: ["event", slug],
   });
 
+  const { mutate, isPending: mutationIsPending } = useMutation({
+    mutationFn: (formData: Pick<OrderRequest, "date" | "pricing">) =>
+      order({ event: slug, ...formData }),
+    onSuccess: (data) => {
+      console.log(data);
+      if (data.redirect) {
+        router.replace({
+          pathname: "/checkout/payment",
+          params: { url: data.redirect_url },
+        });
+      }
+    },
+    onError: (error) => {
+      console.log(error);
+    }
+  });
+
   if (isError) {
-    console.log(error);
+    return (
+      <SafeAreaView>
+        <ScrollView>
+          <Text className="text-white">{(error as AxiosError).status}</Text>
+          <Text className="text-white">{JSON.stringify(error, null, 2)}</Text>
+        </ScrollView>
+      </SafeAreaView>
+    );
   }
 
   if (isPending) {
     return (
-      <View>
+      <SafeAreaView>
         <Text className="text-blue-400">Loading...</Text>
-      </View>
+      </SafeAreaView>
     );
   }
 
@@ -87,14 +116,15 @@ export default function Event() {
           {/* Save a Trip Button */}
         </View>
 
-        <Link href="/checkout">
-          <TouchableOpacity
-            style={styles.saveButton}
-            className="absolute bottom-0 left-0 right-0 m-4"
-          >
-            <Text style={styles.saveButtonText}>Checkout</Text>
-          </TouchableOpacity>
-        </Link>
+        <Button
+          mode="contained"
+          className="absolute bottom-4 left-4 right-4"
+          onPress={() => mutate({})}
+          loading={mutationIsPending}
+          disabled={mutationIsPending}
+        >
+          Order Ticket
+        </Button>
       </ScrollView>
     );
 }
@@ -203,7 +233,6 @@ const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
     paddingBottom: 80,
-    // backgroundColor: '#121212', // Dark background color
   },
   imageContainer: {
     position: "relative",
@@ -280,15 +309,10 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   saveButton: {
-    // position: 'absolute',
-    // bottom: 20,
-    // left: 20,
-    // right: 20,
     backgroundColor: "#BB86FC", // Dark mode accent color
     paddingVertical: 15,
     borderRadius: 10,
     alignItems: "center",
-    // marginVertical: 20,
   },
   saveButtonText: {
     color: "#121212", // Dark background to contrast the button text

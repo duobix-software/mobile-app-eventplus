@@ -9,9 +9,11 @@ export default function AppLayout() {
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         <Stack.Screen name="profile" options={{ title: "Profile" }} />
         <Stack.Screen name="events/[slug]" options={{ headerShown: false }} />
-        <Stack.Screen name="checkout/index" options={{ headerShown: false }} />
-        <Stack.Screen name="payment/index" options={{ headerShown: false }} />
-        <Stack.Screen name="scan-nfc" />
+        <Stack.Screen name="categories/[slug]" options={{ headerShown: false }} />
+        <Stack.Screen name="checkout/payment" options={{ headerShown: false }} />
+        <Stack.Screen name="checkout/success" options={{headerShown: false}} />
+        <Stack.Screen name="checkout/failure" options={{headerShown: false}} />
+        <Stack.Screen name="scan-nfc" options={{headerShown: false}} />
       </Stack>
     </AuthProvider>
   );

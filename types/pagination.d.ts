@@ -5,7 +5,15 @@ type CursorPaginationMeta = {
   prev_cursor?: string;
 };
 
-type CursorPaginationLinks = {
+type SimplePaginationMeta = {
+  current_page: number;
+  from: number;
+  path: string;
+  per_page: number;
+  to: number;
+};
+
+type PaginationLinks = {
   first?: string;
   lasr?: string;
   prev?: string;
@@ -15,31 +23,13 @@ type CursorPaginationLinks = {
 interface CursorPagination<TData> {
   data: TData;
   meta: CursorPaginationMeta;
-  links: CursorPaginationLinks;
+  links: PaginationLinks;
 }
 
-// type PaginationMeta = {
-//     current_page: number;
-//     from: number;
-//     last_page: number;
-//     links: PaginationMetaLink[];
-//     path: string;
-//     per_page: number;
-//     to: number;
-//     total: number;
-// };
+interface SimplePagination<TData> {
+  data: TData;
+  meta: SimplePaginationMeta;
+  links: PaginationLinks;
+}
 
-// type PaginationMetaLink = {
-//     url?: string;
-//     label: string;
-//     active: boolean;
-// };
-
-// type PaginationLinks = {
-//     first: string;
-//     last: string;
-//     next?: string;
-//     prev?: string;
-// };
-
-export { CursorPagination };
+export { CursorPagination, SimplePagination };
