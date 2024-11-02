@@ -1,10 +1,10 @@
 import React from "react";
 import { getEvents } from "@/services/api/events";
 import { useInfiniteQuery } from "@tanstack/react-query";
-import { Text, View, Image } from "react-native";
+import { Text, View, Image, TouchableOpacity } from "react-native";
 import { Event as TEvent } from "@/types/event";
 import { Ionicons } from "@expo/vector-icons";
-import { Link } from "expo-router";
+import { Link, router } from "expo-router";
 
 export default function Events() {
   const { data, status } = useInfiniteQuery({
@@ -42,15 +42,26 @@ export default function Events() {
 
 function Event({ event }: { event: TEvent }) {
   return (
-    <View className="flex bg-zinc-800 rounded-lg overflow-hidden mb-3">
-        <Image source={{ uri: event.banner }} className="h-28 w-full" />
-        <View className="p-2">
-          <Text className="text-white font-medium text-sm">{event.title}</Text>
-          <View className="flex-row items-center">
-            <Ionicons name="location-sharp" color={"#ea580c"} />
-            <Text className="pl-0.5 text-white text-xs">Algiers, Algeria</Text>
-          </View>
+    <TouchableOpacity
+      className="flex bg-zinc-800 rounded-lg overflow-hidden mb-3"
+      onPress={() =>
+        router.push({
+          pathname: "/events/[slug]",
+          params: { slug: event.slug },
+        })
+      }
+      activeOpacity={0.7}
+    >
+      <Image source={{ uri: event.banner }} className="h-28 w-full" />
+      <View className="p-2">
+        <Text className="text-white font-medium text-sm mb-1">
+          {event.title}
+        </Text>
+        <View className="flex-row items-center">
+          <Ionicons name="location-sharp" color={"#ea580c"} />
+          <Text className="pl-0.5 text-white text-xs">Algiers, Algeria</Text>
         </View>
       </View>
+    </TouchableOpacity>
   );
 }
