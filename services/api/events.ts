@@ -6,7 +6,7 @@ import { Event } from "@/types/event";
 async function getEvents(
   config: AxiosRequestConfig = {}
 ): Promise<CursorPagination<Event[]>> {
-  const response = await api.get("/events", config);
+  const response = await api.get("/events{?page}", config);
   return await response.data;
 }
 
