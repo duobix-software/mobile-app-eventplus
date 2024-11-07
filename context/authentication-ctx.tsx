@@ -36,7 +36,7 @@ function AuthProvider({ children }: React.PropsWithChildren) {
         if (session) {
           config.headers.Authorization = `Bearer ${session}`;
         } else {
-          router.replace("/login");
+          router.replace("/auth");
         }
 
         return config;
@@ -49,7 +49,7 @@ function AuthProvider({ children }: React.PropsWithChildren) {
       async (error) => {
         if (error.response.status === 401) {
           logout();
-          router.replace("/login");
+          router.replace("/auth");
         }
 
         return Promise.reject(error);
