@@ -12,10 +12,17 @@ function getInitials(name: string) {
     .toUpperCase();
 }
 
+function currencyFormat(number: any) {
+  return new Intl.NumberFormat("fr", {
+    style: "currency",
+    currency: "dzd",
+  }).format(number);
+}
+
 function assert(condition: any, message: string) {
   if (!condition) {
     throw new Error(message);
   }
 }
 
-export { capitalize, getInitials, assert };
+export { capitalize, getInitials, assert, currencyFormat };
