@@ -1,5 +1,6 @@
 import { useSession } from "@/context/session-ctx";
 import { Link, Redirect } from "expo-router";
+import { StatusBar } from "react-native";
 import { Text } from "react-native-paper";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -16,11 +17,12 @@ export default function Index() {
   }
 
   if (!session) {
-    return <Redirect href="/login" />;
+    return <Redirect href="/auth?action=login" />;
   }
 
   return (
     <SafeAreaView>
+      <StatusBar backgroundColor={"#000"} />
       <Text>
         This screen is a loader screen. Here we will check if the user is
         authenticated to know where to redirect him. and here we check if is
@@ -29,6 +31,12 @@ export default function Index() {
       </Text>
       <Text>
         <Link href="/_sitemap">Sitemap</Link>
+      </Text>
+      <Text>
+        <Link href="/auth?action=login">Login</Link>
+      </Text>
+      <Text>
+        <Link href="/auth?action=register">Register</Link>
       </Text>
       <Text>
         <Link href="/home">home</Link>

@@ -8,6 +8,7 @@ export default function ScanNFC() {
   const [supported, setSupported] = React.useState<boolean | undefined>(
     undefined
   );
+
   React.useEffect(() => {
     const checkIsSupported = async () => {
       const deviceIsSupported = await NfcManager.isSupported();
