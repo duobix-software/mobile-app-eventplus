@@ -2,11 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-html {
-  scroll-behavior: smooth;
-}
-
-body {
+/* body {
   font-family: 'Poppins', sans-serif;
 }
 
@@ -14,9 +10,9 @@ body {
   .text-balance {
     text-wrap: balance;
   }
-}
+} */
 
-@layer base {
+/* @layer base {
   :root {
     --background: #FAFAFA;
     --foreground: #020202;
@@ -27,7 +23,7 @@ body {
     --secondary: #EBF0F6;
     --secondary-foreground: #1A2A38;
     --muted: #9CA3AF;
-    --muted-foreground: 2#6E7B8A;
+    --muted-foreground: #6E7B8A;
     --destructive: #FF5B51;
     --destructive-foreground: #FAFAFA;
     --border: #E4E8EE;
@@ -53,20 +49,4 @@ body {
     --input: #3A3F4B;     
     --ring: #4C5670;
   }
-}
-
-@layer base {
-  * {
-    @apply border-border;
-  }
-
-  body {
-    @apply bg-background text-foreground;
-  }
-}
-
-@layer components {
-  .nav-link {
-    @apply hover:text-muted-foreground hover:underline hover:underline-offset-[1rem] hover:decoration-[#b5b5b5];
-  }
-}
+} */
