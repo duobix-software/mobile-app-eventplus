@@ -23,7 +23,8 @@
       "permissions": [
         "android.permission.NFC"
       ],
-      "package": "com.duobix.eventplus"
+      "package": "com.duobix.eventplus",
+      "softwareKeyboardLayoutMode": "pan"
     },
     "web": {
       "bundler": "metro",
