@@ -9,6 +9,7 @@ interface Event {
   date: string;
   dates: EventDate[];
   pricings: EventPricing[];
+  address?: Address;
   created_at: string;
   checkout_base_url: string;
 }
@@ -26,6 +27,16 @@ interface EventDate {
   start_date: string;
   end_date: string;
   duration: string;
+}
+
+interface Address {
+  country: string;
+  state: string;
+  city: string;
+  postcode: string;
+  address: string;
+  latitude?: string;
+  longitude?: string;
 }
 
 export { Event, EventPricing, EventDate };

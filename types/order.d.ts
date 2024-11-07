@@ -11,4 +11,19 @@ interface OrderResponse {
   redirect_url: string;
 }
 
-export { OrderRequest, OrderResponse };
+type OrderStatus =
+  | "Pending"
+  | "Failed"
+  | "Confirmed"
+  | "Canceled"
+  | "Refunded"
+  | "TicketIssued"
+  | "CheckedIn"
+
+interface Order {
+  id: string;
+  status: OrderStatus;
+  created_at: string;
+}
+
+export { OrderRequest, OrderResponse, Order, OrderStatus };
