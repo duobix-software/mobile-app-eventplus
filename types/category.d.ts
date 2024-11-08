@@ -4,6 +4,7 @@ interface Category {
   description: string;
   logo: string;
   banner: string;
+  tags?: any[]
   category_url: string;
   tags_url: string;
 }

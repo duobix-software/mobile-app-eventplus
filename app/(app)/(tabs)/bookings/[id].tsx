@@ -1,43 +1,26 @@
 import React from "react";
-import { ActivityIndicator, Alert, Text, View } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { useNfc } from "@/hooks/useNfc";
+import { Text } from "react-native";
 import { useLocalSearchParams } from "expo-router";
+import { useQuery } from "@tanstack/react-query";
+import { getOrder } from "@/services/api/order";
+import { getTicket } from "@/services/api/ticket";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function booking() {
-  const { writeToTag, invalidateSession, cleanUp, isScanning } = useNfc();
-  const { id } = useLocalSearchParams<{ id: string }>();
+  const { id, event } = useLocalSearchParams<{ id: string; event: string }>();
+  const { data: order } = useQuery({
+    queryKey: ["order", id],
+    queryFn: () => getOrder({ urlTemplateParams: { id } }),
+  });
 
-  React.useEffect(() => {
-    const handleWriteDataToNfc = async (id: string) => {
-      try {
-        const serializedData = JSON.stringify(id);
-        await writeToTag({
-          dataToWrite: serializedData,
-          writeMessageForOS: "Writing data to NFC",
-        });
-        console.log("Data written to NFC");
-        invalidateSession();
-        cleanUp();
-      } catch (e) {
-        invalidateSession(true, JSON.stringify(e));
-        cleanUp();
-        Alert.alert("Error writing to NFC", JSON.stringify(e));
-      }
-    };
-
-    if (id) {
-      handleWriteDataToNfc(id);
-    }
-  }, [id]);
+  const { data: ticket } = useQuery({
+    queryKey: ["ticket", event, id],
+    queryFn: () => getTicket({ urlTemplateParams: { order: id, event } }),
+  });
 
   return (
-    <SafeAreaView className="flex justify-center items-center h-full">
-      {isScanning ? (
-        <Text className="text-2xl font-bold">Scaning</Text>
-      ) : (
-        <Text className="text-2xl font-bold"> {id} </Text>
-      )}
+    <SafeAreaView>
+      <Text>Order details with bar code</Text>
     </SafeAreaView>
   );
 }

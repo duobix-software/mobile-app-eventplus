@@ -18,7 +18,8 @@ export default function AppLayout() {
         <Stack.Screen name="checkout/payment" options={{ headerShown: false }} />
         <Stack.Screen name="checkout/success" options={{ headerShown: false }} />
         <Stack.Screen name="checkout/failure" options={{ headerShown: false }} />
-        <Stack.Screen name="start" options={{ headerShown: false }} />
+        {/* <Stack.Screen name="start" options={{ headerShown: false }} /> */}
+        <Stack.Screen name="getting-started/index" options={{ headerShown: false }} />
         <Stack.Screen name="scan-nfc" options={{ headerShown: false }} />
       </Stack>
     </AuthProvider>
