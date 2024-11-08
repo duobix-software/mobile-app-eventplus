@@ -10,8 +10,8 @@ import {
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { SafeAreaView } from "react-native-safe-area-context";
-import Events from "@/components/Home/events";
-import Categories from "@/components/Home/categories";
+import Events from "@/components/home/events";
+import Categories from "@/components/home/categories";
 import { router } from "expo-router";
 
 export default function HomeScreen() {
