@@ -10,8 +10,8 @@ import {
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { SafeAreaView } from "react-native-safe-area-context";
-import Categories from "@/components/home/categories";
-import Events from "@/components/home/events";
+import Events from "@/components/Home/events";
+import Categories from "@/components/Home/categories";
 import { router } from "expo-router";
 
 export default function HomeScreen() {
@@ -58,7 +58,7 @@ export default function HomeScreen() {
             </TouchableOpacity>
             <TouchableOpacity onPress={() => router.push("/profile")}>
               <Image
-                source={require("@/assets/images/temp/avatar.jpg")}
+                source={require("@/assets/images/duobix.png")}
                 className="flex-1 h-10 w-10 rounded-full"
               />
             </TouchableOpacity>

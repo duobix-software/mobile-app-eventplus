@@ -1,89 +1,103 @@
-import React, { useState } from 'react';
-import { View, Text, Button, Alert, ActivityIndicator } from 'react-native';
-import NfcManager, { NfcTech, Ndef } from 'react-native-nfc-manager';
+import React, { useState } from "react";
+import { View, Text, TouchableOpacity, Button, StyleSheet } from "react-native";
+import { CameraView, useCameraPermissions } from "expo-camera";
 
-const ScanNFCTicketScreen = () => {
-  const [isScanning, setIsScanning] = useState(false);
-  const [ticketData, setTicketData] = useState(null);
+const scanQrCode = () => {
+  const [permission, requestPermission] = useCameraPermissions();
+  const [scanning, setScanning] = useState(false);
+  const [torche, setTorche] = useState(false);
+  const [cornerPoints, setCornerPoints] = useState<Array<number>>([]);
 
-  // Start NFC Manager
-  React.useEffect(() => {
-    NfcManager.start();
-  }, []);
+  if (!permission) {
+    return <View />;
+  }
 
-  // Function to start NFC scanning
-  const startNFCScan = async () => {
-    setIsScanning(true);
-    setTicketData(null);  // Reset ticket data for a new scan
+  if (!permission.granted) {
+    return (
+      <View className="flex-1 justify-center">
+        <Text className="pb-10 text-center">
+          We need your permission to show the camera
+        </Text>
+        <Button onPress={requestPermission} title="grant permission" />
+      </View>
+    );
+  }
 
-    try {
-      // Request NFC technology access
-      await NfcManager.requestTechnology(NfcTech.Ndef);
-
-      // Add listener to detect NFC tags
-      NfcManager.setEventListener(NfcTech.Ndef, {
-        onDiscovered: handleTagDetected,
-      });
-
-      Alert.alert('NFC Scan', 'Ready to scan, hold your phone near an NFC tag.');
-    } catch (ex) {
-      console.warn(ex);
-      Alert.alert('Error', 'Failed to start NFC scan.');
-      stopNFCScan();  // Stop scanning on error
-    }
+  const handleBarCodeScanned = ({ data, cornerPoints }: any) => {
+    console.log(data);
+    setCornerPoints(cornerPoints);
+    setScanning(false);
   };
 
-  // Function to handle NFC tag detection
-  const handleTagDetected = async () => {
-    try {
-      // Get NFC tag information
-      const tag = await NfcManager.getTag();
-      if (tag.ndefMessage) {
-        // Decode and set the ticket data
-        const payload = Ndef.text.decodePayload(tag.ndefMessage[0].payload);
-        setTicketData(payload);
+  const getBoundingBox = (points: Array<number>) => {
+    if (!points || points.length < 4) return null;
 
-        Alert.alert('NFC Scan Success', `Ticket Data: ${payload}`);
-      } else {
-        Alert.alert('Error', 'No readable data found on NFC tag.');
-      }
-    } catch (ex) {
-      console.warn(ex);
-      Alert.alert('Error', 'Failed to read NFC tag.');
-    } finally {
-      stopNFCScan();  // Stop scan after reading
-    }
+    const xValues = points.map((point) => point.x);
+    const yValues = points.map((point) => point.y);
+
+    const minX = Math.min(...xValues);
+    const maxX = Math.max(...xValues);
+    const minY = Math.min(...yValues);
+    const maxY = Math.max(...yValues);
+
+    return { minX, maxX, minY, maxY };
   };
 
-  // Function to stop NFC scanning
-  const stopNFCScan = async () => {
-    setIsScanning(false);
-    await NfcManager.cancelTechnologyRequest();
-    NfcManager.setEventListener(NfcTech.Ndef, null);  // Remove listener
-  };
-
+  const boundingBox = getBoundingBox(cornerPoints);
   return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', padding: 20 }}>
-      <Text style={{ fontSize: 18, marginBottom: 20 }}>Scan Ticket with NFC</Text>
-
-      {isScanning ? (
-        <>
-          <ActivityIndicator size="large" color="#0000ff" />
-          <Text style={{ marginTop: 10 }}>Hold your phone near the NFC tag...</Text>
-          <Button title="Cancel Scan" onPress={stopNFCScan} color="red" />
-        </>
+    <View className="flex-1 ">
+      {!scanning ? (
+        <Button title={"Scan Qr code"} onPress={() => setScanning(true)} />
       ) : (
-        <Button title="Start NFC Scan" onPress={startNFCScan} />
-      )}
-
-      {ticketData && (
-        <View style={{ marginTop: 20 }}>
-          <Text style={{ fontSize: 16 }}>Scanned Ticket Data:</Text>
-          <Text style={{ fontSize: 18, fontWeight: 'bold' }}>{ticketData}</Text>
-        </View>
+        <>
+          <CameraView
+            className="flex-1 h-full w-full "
+            barcodeScannerSettings={{
+              barcodeTypes: ["qr"],
+            }}
+            onBarcodeScanned={handleBarCodeScanned}
+            enableTorch={torche}
+          >
+            <View className="h-full w-full relative">
+              {boundingBox && (
+                <View
+                  style={[
+                    styles.qrCodeBox,
+                    {
+                      left: boundingBox.minX,
+                      top: boundingBox.minY,
+                      width: boundingBox.maxX - boundingBox.minX,
+                      height: boundingBox.maxY - boundingBox.minY,
+                    },
+                  ]}
+                />
+              )}
+              <View className="flex flex-row items-end justify-between p-10 h-full ">
+                <TouchableOpacity
+                  onPress={() => setScanning(false)}
+                  className="flex items-center justify-center"
+                >
+                  <Text className="text-3xl text-white">Stop Scanning</Text>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => setTorche(!torche)}>
+                  <Text className="text-3xl text-white">Toche</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </CameraView>
+        </>
       )}
     </View>
   );
 };
 
-export default ScanNFCTicketScreen;
+export default scanQrCode;
+
+const styles = StyleSheet.create({
+  qrCodeBox: {
+    position: "absolute",
+    borderColor: "white",
+    borderWidth: 4,
+    borderRadius: 15,
+  },
+});

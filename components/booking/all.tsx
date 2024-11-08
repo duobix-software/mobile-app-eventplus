@@ -34,7 +34,10 @@ export default function AllBookings() {
                   onPress={() =>
                     router.push({
                       pathname: "/bookings/[id]",
-                      params: { id: order.id },
+                      params: {
+                        id: order.id,
+                        event: "lollapalooza-winter-edition",
+                      },
                     })
                   }
                 >
