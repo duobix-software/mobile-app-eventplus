@@ -1,7 +1,6 @@
 import { SafeAreaView } from "react-native-safe-area-context";
-import { ScrollView, View } from "react-native";
+import { View, Text, ActivityIndicator, TouchableOpacity } from "react-native";
 import { useUser } from "@/context/authentication-ctx";
-import { ThemedText } from "@/components/ThemedText";
 import { Avatar, Button } from "react-native-paper";
 import { getInitials } from "@/utils/helpers";
 import { useSession } from "@/context/session-ctx";
@@ -13,31 +12,44 @@ export default function Profile() {
 
   if (isLoading) {
     return (
-      <View>
-        <ThemedText>Loading...</ThemedText>
+      <View className="h-full flex justify-center">
+        <ActivityIndicator size="large" color={"#007BFF"}></ActivityIndicator>
       </View>
     );
   }
 
   return (
     <SafeAreaView className="flex flex-col gap-4 h-full mx-4 -my-2">
-      <View className="">
-        {user?.picture ? (
-          <Avatar.Image source={{}} />
-        ) : (
-          <Avatar.Text label={getInitials(user?.fullname)} />
-        )}
+      <View className="flex flex-row  items-center gap-4">
         <View>
-          <ThemedText>{user.fullname}</ThemedText>
-          <ThemedText>Show profile</ThemedText>
+          {user?.picture ? (
+            <Avatar.Image source={{}} />
+          ) : (
+            <View className="bg-primary flex justify-center items-center size-20 rounded-full">
+              <Text className="text-primary-foreground  text-4xl">
+                {getInitials(user?.fullname)}
+              </Text>
+            </View>
+          )}
+        </View>
+        <View>
+          <Text className="font-bold text-3xl">{user.fullname}</Text>
+          <Text className="text-sm text-muted">{user.email} </Text>
+          <Text className="text-sm text-muted">{user.phone} </Text>
         </View>
       </View>
-      <View>
-        <ThemedText>Personal Info</ThemedText>
-      </View>
-      <View>
-        <ThemedText>Account</ThemedText>
-      </View>
+      <TouchableOpacity
+        onPress={() => router.push("profile/accountSettings")}
+        className="border-b px-4 py-2 rounded-lg "
+      >
+        <Text className="text-xl">Account Settings</Text>
+      </TouchableOpacity>
+      <TouchableOpacity className="border-b px-4 py-2 rounded-lg ">
+        <Text className="text-xl">Support</Text>
+      </TouchableOpacity>
+      <TouchableOpacity className="border-b px-4 py-2 rounded-lg ">
+        <Text className="text-xl">FAQ</Text>
+      </TouchableOpacity>
       <View className="mt-auto mb-5">
         <Button
           mode="contained"

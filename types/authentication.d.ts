@@ -14,8 +14,16 @@ interface RegistrationData {
   device_name: string;
 }
 
+interface UpdateInformationData {
+  fullname: string;
+  email: string;
+  phone: string;
+  password: string;
+  currentpassword: string;
+}
+
 type AuthContext =
   | { isLoading: true; user: null }
   | { isLoading: false; user: User };
 
-export { Credentials, RegistrationData, AuthContext };
+export { Credentials, RegistrationData, AuthContext, UpdateInformationData };
