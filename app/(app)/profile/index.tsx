@@ -52,13 +52,12 @@ export default function Profile() {
       </TouchableOpacity>
       <View className="mt-auto mb-5">
         <Button
-          mode="contained"
           onPress={() => {
             logout();
-            router.replace("/login");
+            router.replace("/auth");
           }}
         >
-          Logout
+          <Text>Logout</Text>
         </Button>
       </View>
     </SafeAreaView>

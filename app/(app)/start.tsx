@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, FlatList, StyleSheet } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const MultiSelectScreen = () => {
     // Initial data for categories and keywords
@@ -155,5 +156,3 @@ const styles = StyleSheet.create({
 });
 
 export default MultiSelectScreen;
-
-// export default function GettingStarted() {}

@@ -1,7 +1,6 @@
 import { useSession } from "@/context/session-ctx";
 import { Link, Redirect } from "expo-router";
-import { StatusBar } from "react-native";
-import { Text } from "react-native-paper";
+import { StatusBar, Text } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function Index() {
@@ -40,6 +39,9 @@ export default function Index() {
       </Text>
       <Text>
         <Link href="/home">home</Link>
+      </Text>
+      <Text>
+        <Link href="/getting-started">get started</Link>
       </Text>
     </SafeAreaView>
   );
