@@ -7,7 +7,7 @@ import UpdateInformations from "@/components/profile/updateInformations";
 
 export default function accontSettings() {
   const { user, isLoading } = useUser();
-  
+
   if (isLoading) {
     return (
       <View className="h-full flex justify-center">
@@ -18,7 +18,6 @@ export default function accontSettings() {
 
   return (
     <View className="flex justify-center p-4 grow relative bg-background">
-      {/* <UpdateInformations user={user} /> */}
       <UpdateInformations user={user} />
       <Updatepassowrd />
       <DeleteProfile />

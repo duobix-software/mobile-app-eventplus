@@ -44,17 +44,22 @@ export default function HomeScreen() {
         scrollEventThrottle={100}
       >
         <View className="flex-row items-center justify-between gap-4">
-          <View className="flex-1 flex-row items-center bg-gray-100 rounded-lg px-2 py-1">
-            <Ionicons name="search-outline" size={20} color="#aaa" />
+          <View className="flex-1 flex-row items-center bg-card rounded-lg px-2 py-1">
+            <Ionicons
+              name="search-outline"
+              size={20}
+              color="#aaa"
+              className="text-primary"
+            />
             <TextInput
               placeholder="Search"
               placeholderTextColor="#aaa"
-              className="flex-1 text-forground ps-2 caret-secondary"
+              className="flex-1 text-foreground ps-2 caret-secondary "
             />
           </View>
           <View className="flex-row items-center gap-2">
             <TouchableOpacity>
-              <Ionicons name="notifications-outline" size={24} color={"#fff"} />
+              <Ionicons name="notifications-outline" size={24} />
             </TouchableOpacity>
             <TouchableOpacity onPress={() => router.push("/profile")}>
               <Image

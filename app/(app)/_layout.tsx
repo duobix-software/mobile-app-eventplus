@@ -10,7 +10,7 @@ export default function AppLayout() {
 
   return (
     <AuthProvider>
-      <Stack>
+      <Stack >
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         <Stack.Screen name="profile" options={{ headerShown: false }} />
         <Stack.Screen name="events/[slug]" options={{ headerShown: false }} />

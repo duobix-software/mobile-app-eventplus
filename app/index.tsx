@@ -1,12 +1,12 @@
 import { useSession } from "@/context/session-ctx";
-import { Link, Redirect } from "expo-router";
-import { StatusBar, Text } from "react-native";
+import { Link, Redirect, router } from "expo-router";
+import { StatusBar, TouchableOpacity } from "react-native";
+import { Text } from "react-native-paper";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function Index() {
   const { isLoading, session } = useSession();
 
-  // here we can return the splash screen
   if (isLoading) {
     return (
       <SafeAreaView>
@@ -37,12 +37,18 @@ export default function Index() {
       <Text>
         <Link href="/auth?action=register">Register</Link>
       </Text>
-      <Text>
-        <Link href="/home">home</Link>
-      </Text>
-      <Text>
-        <Link href="/getting-started">get started</Link>
-      </Text>
+      <TouchableOpacity
+        className="bg-primary px-4 py-2 rounded-lg m-4"
+        onPress={() => router.replace("/(organisation)/")}
+      >
+        <Text>Organisation</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        className="bg-primary px-4 py-2 rounded-lg m-4"
+        onPress={() => router.replace("/home")}
+      >
+        <Text>Home</Text>
+      </TouchableOpacity>
     </SafeAreaView>
   );
 }

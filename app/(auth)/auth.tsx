@@ -14,13 +14,13 @@ import { useGlobalSearchParams } from "expo-router";
 
 export default function Auth() {
   const { action } = useGlobalSearchParams<{ action?: "login" | "register" }>();
-
+  const [activeTab, setActiveTab] = React.useState(action ?? "login");
   return (
     <SafeAreaView className="flex-1 bg-background">
       <ScrollView>
         <View className="flex-row-reverse justify-between mt-14">
           <View className="items-end">
-            <View className="w-32 items-center py-6 bg-red-700 rounded-l-3xl">
+            <View className="w-32 items-center py-6 bg-card rounded-l-3xl">
               <Image
                 source={require("@/assets/images/logo/1000-1000.png")}
                 className="h-20 w-20"
@@ -28,12 +28,20 @@ export default function Auth() {
             </View>
           </View>
           <View className="px-4">
-            <Text className="text-foreground text-[2rem]">Welcome</Text>
-            <Text className="text-foreground text-[3rem]">Back</Text>
+            <Text className="text-foreground font-bold text-[2rem]">
+              {activeTab == "login" ? "Welcome" : "Let's"}
+            </Text>
+            <Text className="text-foreground font-bold text-[3rem]">
+              {activeTab == "login" ? "Back" : "Start"}
+            </Text>
           </View>
         </View>
 
-        <Tabs defaultValue={action ?? "login"} className="mt-10 px-4">
+        <Tabs
+          className="mt-10 px-4"
+          activeTab={activeTab}
+          setActiveTab={setActiveTab}
+        >
           <TabsList>
             <TabsTrigger value="login">Log In</TabsTrigger>
             <TabsTrigger value="register">Sign Up</TabsTrigger>

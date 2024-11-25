@@ -10,7 +10,6 @@ export default function UpdateInformations({ user }: any) {
   const {
     control,
     handleSubmit,
-    setError,
     formState: { errors },
   } = useForm<UpdateInformationData>({
     defaultValues: {
@@ -19,6 +18,7 @@ export default function UpdateInformations({ user }: any) {
       phone: user?.phone,
     },
   });
+  console.log(user);
   const fullnameInputRef = React.useRef<TextInput>(null);
   const emailInputRef = React.useRef<TextInput>(null);
   const phoneInputRef = React.useRef<TextInput>(null);
@@ -32,8 +32,10 @@ export default function UpdateInformations({ user }: any) {
     }, 2000);
   };
   return (
-    <View className="w-full my-4 p-4 bg-white rounded-lg">
-      <Text className="text-xl font-bold my-4">Personnal infomations</Text>
+    <View className="w-full my-4 p-4 bg-card rounded-lg">
+      <Text className="text-xl text-card-foreground font-bold my-4">
+        Personnal infomations
+      </Text>
       <View className="flex justify-center items-center">
         <View className="mb-4 w-full">
           <Controller

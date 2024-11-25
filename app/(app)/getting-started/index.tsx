@@ -4,7 +4,7 @@ import { useInfiniteQuery, useMutation } from "@tanstack/react-query";
 import { View, Text, ScrollView, Image } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Button } from "@/components/ui/button";
-import { storeCustomerTags } from "@/services/tags";
+// import { storeCustomerTags } from "@/services/tags";
 import { Skelton } from "@/components/ui/skelton";
 import { Controller, useForm } from "react-hook-form";
 import { cn } from "@/utils/utils";
@@ -30,30 +30,30 @@ export default function Index() {
       },
     });
 
-  const mutation = useMutation({
-    mutationFn: (data: { tags: string[] }) => storeCustomerTags(data),
-    onSuccess: () => {},
-  });
+  // const mutation = useMutation({
+  //   mutationFn: (data: { tags: string[] }) => storeCustomerTags(data),
+  //   onSuccess: () => {},
+  // });
 
-  const onSubmit = (data: { tags: string[] }) => {
-    mutation.mutate(data);
-  };
+  // const onSubmit = (data: { tags: string[] }) => {
+  //   mutation.mutate(data);
+  // };
 
-  if (mutation.status === "idle") {
-    return (
-      <SafeAreaView className="flex-1 bg-background px-4 items-center justify-center">
-        <View>
-          <Image
-            source={require("@/assets/images/logo/1000-1000.png")}
-            className="h-40 w-40"
-          />
-        </View>
-        <Text className="text-foreground text-2xl font-medium">
-          Personalizing your experience
-        </Text>
-      </SafeAreaView>
-    );
-  }
+  // if (mutation.status === "idle") {
+  //   return (
+  //     <SafeAreaView className="flex-1 bg-background px-4 items-center justify-center">
+  //       <View>
+  //         <Image
+  //           source={require("@/assets/images/logo/1000-1000.png")}
+  //           className="h-40 w-40"
+  //         />
+  //       </View>
+  //       <Text className="text-foreground text-2xl font-medium">
+  //         Personalizing your experience
+  //       </Text>
+  //     </SafeAreaView>
+  //   );
+  // }
 
   return (
     <SafeAreaView className="flex-1 bg-background px-4">
@@ -209,11 +209,11 @@ export default function Index() {
             ))}
         </View>
       </ScrollView>
-      <View className="py-4 px-4 border-t border-border -mx-4">
+      {/* <View className="py-4 px-4 border-t border-border -mx-4">
         <Button onPress={handleSubmit(onSubmit)}>
           <Text className="text-primary-foreground">Continue</Text>
         </Button>
-      </View>
+      </View> */}
     </SafeAreaView>
   );
 }

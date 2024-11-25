@@ -25,4 +25,36 @@ function assert(condition: any, message: string) {
   }
 }
 
-export { capitalize, getInitials, assert, currencyFormat };
+function isValidUrlWithToken(url: string, searchParam: string): boolean {
+  try {
+    // Check if the string is a valid URL
+    const parsedUrl = new URL(url);
+
+    // Check if the token parameter exists
+    const result = parsedUrl.searchParams.get(searchParam);
+
+    // Return true if the token is present and the URL is valid
+    return result !== null && result !== "";
+  } catch (e) {
+    // If an error is thrown, it's not a valid URL
+    return false;
+  }
+}
+
+function getQueryParamValue(url: string, paramName: string) {
+  try {
+    // Parse the URL
+    const parsedUrl = new URL(url);
+
+    // Get the value of the specified query parameter
+    const paramValue = parsedUrl.searchParams.get(paramName);
+
+    // Return the parameter value or null if it doesn't exist
+    return paramValue;
+  } catch (e) {
+    // If an error is thrown, it's not a valid URL
+    return null;
+  }
+}
+
+export { capitalize, getInitials, assert, currencyFormat, isValidUrlWithToken, getQueryParamValue };

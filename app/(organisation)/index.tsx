@@ -1,12 +1,23 @@
 import React, { useState } from "react";
-import { View, Text, TouchableOpacity, Button, StyleSheet } from "react-native";
-import { CameraView, useCameraPermissions } from "expo-camera";
+import {
+  View,
+  Text,
+  Button,
+  ScrollView,
+  ActivityIndicator,
+  Image,
+} from "react-native";
+import { useCameraPermissions } from "expo-camera";
+import Cameraview from "@/components/organisation/cameraview";
+import { useMutation } from "@tanstack/react-query";
+import { checkAccessTicket } from "@/services/api/admin/check-access-ticket";
+import { getQueryParamValue, isValidUrlWithToken } from "@/utils/helpers";
+import { Ionicons } from "@expo/vector-icons";
+import { cn } from "@/utils/utils";
 
 const scanQrCode = () => {
   const [permission, requestPermission] = useCameraPermissions();
-  const [scanning, setScanning] = useState(false);
-  const [torche, setTorche] = useState(false);
-  const [cornerPoints, setCornerPoints] = useState<Array<number>>([]);
+  const [scannedData, setScannedData] = useState<string[]>([]);
 
   if (!permission) {
     return <View />;
@@ -23,81 +34,106 @@ const scanQrCode = () => {
     );
   }
 
-  const handleBarCodeScanned = ({ data, cornerPoints }: any) => {
-    console.log(data);
-    setCornerPoints(cornerPoints);
-    setScanning(false);
+  const handleScannedData = (data: string) => {
+    if (scannedData.includes(data)) {
+      return;
+    }
+
+    setScannedData((scanned) => {
+      scanned.unshift(data);
+      return [...scanned];
+    });
   };
-
-  const getBoundingBox = (points: Array<number>) => {
-    if (!points || points.length < 4) return null;
-
-    const xValues = points.map((point) => point.x);
-    const yValues = points.map((point) => point.y);
-
-    const minX = Math.min(...xValues);
-    const maxX = Math.max(...xValues);
-    const minY = Math.min(...yValues);
-    const maxY = Math.max(...yValues);
-
-    return { minX, maxX, minY, maxY };
-  };
-
-  const boundingBox = getBoundingBox(cornerPoints);
   return (
-    <View className="flex-1 ">
-      {!scanning ? (
-        <Button title={"Scan Qr code"} onPress={() => setScanning(true)} />
-      ) : (
-        <>
-          <CameraView
-            className="flex-1 h-full w-full "
-            barcodeScannerSettings={{
-              barcodeTypes: ["qr"],
-            }}
-            onBarcodeScanned={handleBarCodeScanned}
-            enableTorch={torche}
-          >
-            <View className="h-full w-full relative">
-              {boundingBox && (
-                <View
-                  style={[
-                    styles.qrCodeBox,
-                    {
-                      left: boundingBox.minX,
-                      top: boundingBox.minY,
-                      width: boundingBox.maxX - boundingBox.minX,
-                      height: boundingBox.maxY - boundingBox.minY,
-                    },
-                  ]}
-                />
-              )}
-              <View className="flex flex-row items-end justify-between p-10 h-full ">
-                <TouchableOpacity
-                  onPress={() => setScanning(false)}
-                  className="flex items-center justify-center"
-                >
-                  <Text className="text-3xl text-white">Stop Scanning</Text>
-                </TouchableOpacity>
-                <TouchableOpacity onPress={() => setTorche(!torche)}>
-                  <Text className="text-3xl text-white">Toche</Text>
-                </TouchableOpacity>
-              </View>
-            </View>
-          </CameraView>
-        </>
-      )}
+    <View className="flex-1">
+      <View className="w-full h-1/2">
+        <Cameraview onScanned={handleScannedData} />
+      </View>
+      <View className="w-full h-1/2 pt-4 border-t">
+        {scannedData.length ? (
+          <ScrollView showsVerticalScrollIndicator={false} className="p-4">
+            {scannedData.map((barCodeData, idx) => (
+              <Comp key={idx} barCodeData={barCodeData} index={idx} />
+            ))}
+          </ScrollView>
+        ) : (
+          <View className="flex justify-center items-center gap-4 h-full">
+            <Text className="text-foreground text-2xl font-bold">
+              Scan a Qr code to get ticket informations
+            </Text>
+            <Ionicons name="qr-code" size={80} color="#007BFF" />
+          </View>
+        )}
+      </View>
     </View>
   );
 };
 
 export default scanQrCode;
 
-const styles = StyleSheet.create({
-  qrCodeBox: {
-    position: "absolute",
-    borderColor: "white",
-    borderWidth: 4,
-    borderRadius: 15,
-  },
-});
+function Comp({ barCodeData, index }: { barCodeData: string; index: number }) {
+  const { mutate, status, data } = useMutation({
+    mutationFn: (data: any) => checkAccessTicket(data),
+  });
+
+  React.useMemo(() => {
+    if (!isValidUrlWithToken(barCodeData, "token")) {
+      return;
+    }
+    const token = getQueryParamValue(barCodeData, "token");
+    mutate(token);
+  }, [barCodeData]);
+
+  return (
+    <View className="bg-card mb-2 p-4 rounded-lg h-36">
+      {status === "idle" && (
+        <View className="flex flex-row justify-between items-center">
+          <Text className="text-3xl font-bold">Invalid Qr Code</Text>
+          <Ionicons color="#fcd34d" name="help-circle" size={30} />
+        </View>
+      )}
+
+      {status === "pending" && (
+        <ActivityIndicator size="large" className="text-primary" />
+      )}
+      {status === "success" && (
+        <>
+          <View className="flex flex-row justify-between items-center">
+            <View className="flex flex-row items-center justify-start gap-6 ">
+              <Text className="text-5xl font-bold">#{data.order}</Text>
+              <View>
+                <Text className="text-xl font-bold">
+                  {data.customer.fullname}
+                </Text>
+                <Text className="text-muted">{data.customer.email}</Text>
+              </View>
+            </View>
+            <Ionicons color="green" name="checkmark-circle" size={30} />
+          </View>
+          <View>
+            <Text className="text-lg">Status: {data.status}</Text>
+            <View className="flex flex-row justify-between items-center">
+              <Text className="text-2xl font-bold">
+                {data.variant.event_pricing.name}
+              </Text>
+              <Text className="text-xl font-bold">
+                {data.variant.event_pricing.price}
+              </Text>
+            </View>
+          </View>
+        </>
+      )}
+      {status === "error" && (
+        <>
+          <View className="flex flex-row justify-between items-center">
+            <Text className="text-3xl font-bold">Ticket Invalid</Text>
+            <Ionicons color="red" name="close-circle" size={30} />
+            <Text>
+              jklqm
+            </Text>
+          </View>
+        </>
+      )}
+    </View>
+  );
+}

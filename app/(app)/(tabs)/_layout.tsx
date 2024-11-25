@@ -1,21 +1,31 @@
 import React from "react";
 import { Tabs } from "expo-router";
 import { TabBarIcon } from "@/components/navigation/TabBarIcon";
-import { Colors } from "@/constants/Colors";
+import { useColorScheme } from "nativewind";
 
 export default function TabLayout() {
+  const colorScheme = useColorScheme().colorScheme;
 
   return (
     <Tabs
       screenOptions={{
-        // tabBarActiveTintColor: Colors[colorScheme ?? "light"].tint,
         headerShown: false,
+        tabBarShowLabel: false,
+        tabBarStyle: {
+          position: "absolute",
+          borderTopWidth: 0,
+          marginBottom: 20,
+          marginHorizontal: 20,
+          overflow: "hidden",
+          borderRadius: 15,
+          backgroundColor: colorScheme == "dark" ? "#131313" : "#F0F0F0",
+          height: 60,
+        },
       }}
     >
       <Tabs.Screen
         name="home"
         options={{
-          title: "Home",
           tabBarIcon: ({ color, focused }) => (
             <TabBarIcon
               name={focused ? "home" : "home-outline"}
@@ -24,22 +34,9 @@ export default function TabLayout() {
           ),
         }}
       />
-      {/* <Tabs.Screen
-        name="search"
+      <Tabs.Screen
+        name="bookings"
         options={{
-          title: "Explore",
-          tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon
-              name={focused ? "search" : "search-outline"}
-              color={color}
-            />
-          ),
-        }}
-      /> */}
-      {/* <Tabs.Screen
-        name="mybookings"
-        options={{
-          title: "My Bookings",
           tabBarIcon: ({ color, focused }) => (
             <TabBarIcon
               name={focused ? "calendar" : "calendar-outline"}
@@ -47,23 +44,10 @@ export default function TabLayout() {
             />
           ),
         }}
-      /> */}
-      {/* <Tabs.Screen
-        name="notification"
-        options={{
-          title: "Notifications",
-          tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon
-              name={focused ? "notifications" : "notifications-outline"}
-              color={color}
-            />
-          ),
-        }}
-      /> */}
-      {/* <Tabs.Screen
+      />
+      <Tabs.Screen
         name="settings"
         options={{
-          title: "Settings",
           tabBarIcon: ({ color, focused }) => (
             <TabBarIcon
               name={focused ? "settings" : "settings-outline"}
@@ -71,8 +55,7 @@ export default function TabLayout() {
             />
           ),
         }}
-      /> */}
-
+      />
     </Tabs>
   );
 }

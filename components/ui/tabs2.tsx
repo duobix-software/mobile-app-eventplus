@@ -10,13 +10,17 @@ interface TabsContextType {
 const TabsContext = React.createContext<TabsContextType | undefined>(undefined);
 
 interface TabsProps extends React.ComponentProps<typeof View> {
-  defaultValue: string;
   children: React.ReactNode;
+  activeTab: string;
+  setActiveTab: (value: string) => void;
 }
 
-const Tabs: React.FC<TabsProps> = ({ defaultValue, className, children }) => {
-  const [activeTab, setActiveTab] = React.useState(defaultValue);
-
+const Tabs: React.FC<TabsProps> = ({
+  className,
+  children,
+  activeTab,
+  setActiveTab,
+}) => {
   return (
     <TabsContext.Provider value={{ activeTab, setActiveTab }}>
       <View className={cn(className)}>{children}</View>

@@ -29,8 +29,8 @@ export default function Updatepassowrd() {
   };
 
   return (
-    <View className="w-full my-4 p-4 bg-white rounded-lg">
-      <Text className="text-xl font-bold my-4">Update Password</Text>
+    <View className="w-full my-4 p-4 bg-card rounded-lg">
+      <Text className="text-xl text-card-foreground font-bold my-4">Update Password</Text>
       <View className="flex justify-center items-center">
         <View className="mb-4 w-full">
           <Controller

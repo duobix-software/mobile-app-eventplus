@@ -22,7 +22,7 @@ const themes = {
     "--ring": "#0A0E1A",
   }),
   dark: vars({
-    "--background": "#000001",
+    "--background": "#101012",
     "--foreground": "#FAFAFA",
     "--card": "#27272a",
     "--card-foreground": "#FAFAFA",
