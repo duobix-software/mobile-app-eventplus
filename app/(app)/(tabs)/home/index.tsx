@@ -16,7 +16,6 @@ import { router } from "expo-router";
 
 export default function HomeScreen() {
   const [endReached, setEndReached] = React.useState(false);
-
   const handleScrollEnd = React.useCallback(
     (event: NativeSyntheticEvent<NativeScrollEvent>) => {
       const { contentOffset, layoutMeasurement, contentSize } =
@@ -34,6 +33,7 @@ export default function HomeScreen() {
     },
     []
   );
+
 
   return (
     <SafeAreaView className="flex-1 bg-background">

@@ -7,7 +7,7 @@ import { useSession } from "./session-ctx";
 import { AuthContext as AuthContextType } from "@/types/authentication";
 
 const AuthContext = React.createContext<AuthContextType>({
-  isLoading: true,
+  isUserLoading: true,
   user: null,
 });
 
@@ -67,11 +67,11 @@ function AuthProvider({ children }: React.PropsWithChildren) {
       value={
         isSuccess
           ? {
-              isLoading: false,
+              isUserLoading: false,
               user: data,
             }
           : {
-              isLoading: true,
+              isUserLoading: true,
               user: null,
             }
       }

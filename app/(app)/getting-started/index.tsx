@@ -1,20 +1,23 @@
-import React from "react";
+import React, { useState } from "react";
 import { getCategories } from "@/services/api/categories";
 import { useInfiniteQuery, useMutation } from "@tanstack/react-query";
-import { View, Text, ScrollView, Image } from "react-native";
+import {
+  View,
+  Text,
+  ScrollView,
+  Image,
+  TouchableOpacity,
+  StyleSheet,
+} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Button } from "@/components/ui/button";
-// import { storeCustomerTags } from "@/services/tags";
+import { storeCustomerTags } from "@/services/api/tags";
 import { Skelton } from "@/components/ui/skelton";
-import { Controller, useForm } from "react-hook-form";
-import { cn } from "@/utils/utils";
+import { router } from "expo-router";
 
 export default function Index() {
-  const { control, handleSubmit } = useForm<{ tags: string[] }>({
-    defaultValues: {
-      tags: [],
-    },
-  });
+  const [start, setStart] = useState(false);
+  const [selectedKeywords, setSelectedKeywords] = useState([]);
 
   const { data, status, isFetchingNextPage, fetchNextPage, hasNextPage } =
     useInfiniteQuery({
@@ -30,40 +33,76 @@ export default function Index() {
       },
     });
 
-  // const mutation = useMutation({
-  //   mutationFn: (data: { tags: string[] }) => storeCustomerTags(data),
-  //   onSuccess: () => {},
-  // });
+  const mutation = useMutation({
+    mutationFn: (data: { tags: string[] }) => storeCustomerTags(data),
+    onSuccess: () => {
+      router.replace("/(auth)");
+    },
+  });
 
-  // const onSubmit = (data: { tags: string[] }) => {
-  //   mutation.mutate(data);
-  // };
+  const onSubmit = (data: Array<string>) => {
+    // mutation.mutate(data);
+    router.replace("/home");
+  };
 
-  // if (mutation.status === "idle") {
-  //   return (
-  //     <SafeAreaView className="flex-1 bg-background px-4 items-center justify-center">
-  //       <View>
-  //         <Image
-  //           source={require("@/assets/images/logo/1000-1000.png")}
-  //           className="h-40 w-40"
-  //         />
-  //       </View>
-  //       <Text className="text-foreground text-2xl font-medium">
-  //         Personalizing your experience
-  //       </Text>
-  //     </SafeAreaView>
-  //   );
-  // }
+  const renderKeywordItem = (item) => (
+    <TouchableOpacity
+      key={item.id}
+      style={[
+        styles.itemContainer,
+        selectedKeywords.includes(item.id) && styles.itemSelected,
+      ]}
+      onPress={() => toggleKeywordSelection(item.id)}
+    >
+      <Text style={styles.itemText}>{item.name}</Text>
+    </TouchableOpacity>
+  );
+
+  const toggleKeywordSelection = (id: string) => {
+    if (selectedKeywords.includes(id)) {
+      setSelectedKeywords(selectedKeywords.filter((item) => item !== id));
+    } else {
+      setSelectedKeywords([...selectedKeywords, id]);
+    }
+  };
+
+  if (!start) {
+    return (
+      <SafeAreaView className="flex-1 bg-background px-4 items-center justify-center">
+        <View className="h-2/3 items-center justify-center gap-4">
+          <View>
+            <Image
+              source={require("@/assets/images/logo/1000-1000.png")}
+              className="h-40 w-40"
+            />
+          </View>
+          <Text className="text-foreground text-2xl font-bold">
+            Personalizing your experienceeee
+          </Text>
+        </View>
+        <View className="h-1/3 justify-center items-center">
+          <TouchableOpacity
+            className="bg-primary px-8 py-3 rounded-3xl m-4 "
+            onPress={() => setStart(true)}
+          >
+            <Text className="text-primary-foreground font-bold text-xl">
+              Getting started
+            </Text>
+          </TouchableOpacity>
+        </View>
+      </SafeAreaView>
+    );
+  }
 
   return (
     <SafeAreaView className="flex-1 bg-background px-4">
+      <View className="my-5 border-b pb-2 border-muted">
+        <Text className="text-foreground text-3xl font-bold">Interests</Text>
+        <Text className="text-foreground">
+          Pick things you'd like to seed in your home feed
+        </Text>
+      </View>
       <ScrollView showsVerticalScrollIndicator={false}>
-        <View className="mb-5">
-          <Text className="text-foreground text-lg font-medium">Interests</Text>
-          <Text className="text-foreground">
-            Pick things you'd like to seed in your home feed
-          </Text>
-        </View>
         <View className="gap-4 pb-5">
           {status === "pending" && (
             <>
@@ -163,45 +202,9 @@ export default function Index() {
               <React.Fragment key={idx}>
                 {group.data.map((category) => (
                   <View key={category.slug} className="gap-2">
-                    <Text className="text-foreground">{category.name}</Text>
-                    <View className="flex-row flex-wrap gap-2">
-                      {category.tags?.map((tag) => (
-                        <Controller
-                          key={tag.id}
-                          control={control}
-                          name="tags"
-                          render={({ field: { onChange, value } }) => {
-                            const isSelected = React.useMemo(
-                              () => value.includes(tag.id),
-                              [value.includes(tag.id)]
-                            );
-                            return (
-                              <Button
-                                key={tag.id}
-                                variant="secondary"
-                                onPress={() => {
-                                  const selected = [...value];
-                                  if (isSelected) {
-                                    selected.splice(
-                                      selected.indexOf(tag.id),
-                                      1
-                                    );
-                                  } else {
-                                    selected.push(tag.id);
-                                  }
-                                  console.log(selected);
-                                  onChange(selected);
-                                }}
-                                className={cn(
-                                  isSelected && "border border-primary"
-                                )}
-                              >
-                                <Text className="text-gray-50">{tag.name}</Text>
-                              </Button>
-                            );
-                          }}
-                        />
-                      ))}
+                    <Text style={styles.sectionTitle}>{category.name}</Text>
+                    <View className="flex-row flex-wrap">
+                      {category.tags?.map((item) => renderKeywordItem(item))}
                     </View>
                   </View>
                 ))}
@@ -209,11 +212,52 @@ export default function Index() {
             ))}
         </View>
       </ScrollView>
-      {/* <View className="py-4 px-4 border-t border-border -mx-4">
-        <Button onPress={handleSubmit(onSubmit)}>
+      {status === "error" && (
+        <View className="h-1/2 justify-center items-center ">
+          <Button
+            variant="secondary"
+            className="w-2/3"
+            onPress={() => router.replace("/(app)/getting-started")}
+          >
+            <Text className="font-bold">Opss ... Try Again !</Text>
+          </Button>
+        </View>
+      )}
+      <View className="py-4 px-4 border-t border-border -mx-4">
+        <Button onPress={() => onSubmit(selectedKeywords)}>
           <Text className="text-primary-foreground">Continue</Text>
         </Button>
-      </View> */}
+      </View>
     </SafeAreaView>
   );
 }
+
+const styles = StyleSheet.create({
+  sectionTitle: {
+    color: "#AAAAAA",
+    fontSize: 18,
+    fontWeight: "bold",
+    marginVertical: 10,
+  },
+  listContainer: {
+    marginBottom: 20,
+  },
+  itemContainer: {
+    backgroundColor: "#1F1F1F",
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 20,
+    margin: 5,
+    borderWidth: 1,
+    borderColor: "#333333",
+  },
+  itemText: {
+    color: "#FFFFFF",
+    fontSize: 16,
+    fontWeight: "500",
+  },
+  itemSelected: {
+    backgroundColor: "#0A84FF",
+    borderColor: "#0A84FF",
+  },
+});

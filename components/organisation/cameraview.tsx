@@ -1,20 +1,32 @@
 import React, { useState } from "react";
-import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
-import { BarcodeScanningResult, CameraView, useCameraPermissions } from "expo-camera";
+import { View, Text, TouchableOpacity } from "react-native";
+import { BarcodeScanningResult, CameraView } from "expo-camera";
 import { Button } from "../ui/button";
+import { useSession } from "@/context/session-ctx";
+import { router } from "expo-router";
 
 export default function Cameraview({ onScanned }: any) {
   const [scanning, setScanning] = useState(false);
   const [torche, setTorche] = useState(false);
+  const { logout } = useSession();
 
   const handleBarCodeScanned = ({ data }: BarcodeScanningResult) => {
     onScanned(data);
   };
 
   return !scanning ? (
-    <View className="flex justify-center items-center h-full">
+    <View className="flex justify-center items-center gap-4 h-full">
       <Button onPress={() => setScanning(true)}>
         <Text className="text-primary-foreground font-bold">Scan Qr code</Text>
+      </Button>
+      <Button
+        className="bg-destructive"
+        onPress={() => {
+          logout();
+          router.replace("/auth");
+        }}
+      >
+        <Text className="text-primary-foreground font-bold">Log out</Text>
       </Button>
     </View>
   ) : (

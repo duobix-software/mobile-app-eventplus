@@ -5,7 +5,6 @@ import {
   Button,
   ScrollView,
   ActivityIndicator,
-  Image,
 } from "react-native";
 import { useCameraPermissions } from "expo-camera";
 import Cameraview from "@/components/organisation/cameraview";
@@ -13,7 +12,6 @@ import { useMutation } from "@tanstack/react-query";
 import { checkAccessTicket } from "@/services/api/admin/check-access-ticket";
 import { getQueryParamValue, isValidUrlWithToken } from "@/utils/helpers";
 import { Ionicons } from "@expo/vector-icons";
-import { cn } from "@/utils/utils";
 
 const scanQrCode = () => {
   const [permission, requestPermission] = useCameraPermissions();
@@ -29,7 +27,7 @@ const scanQrCode = () => {
         <Text className="pb-10 text-center">
           We need your permission to show the camera
         </Text>
-        <Button onPress={requestPermission} title="grant permission" />
+        <Button onPress={requestPermission} title="Get permission" />
       </View>
     );
   }
@@ -128,9 +126,6 @@ function Comp({ barCodeData, index }: { barCodeData: string; index: number }) {
           <View className="flex flex-row justify-between items-center">
             <Text className="text-3xl font-bold">Ticket Invalid</Text>
             <Ionicons color="red" name="close-circle" size={30} />
-            <Text>
-              jklqm
-            </Text>
           </View>
         </>
       )}

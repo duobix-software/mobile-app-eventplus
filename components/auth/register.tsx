@@ -41,7 +41,7 @@ export default function Register() {
     mutationFn: (formData: RegistrationData) => register(formData),
     onSuccess: (data) => {
       signIn(data.token);
-      router.replace("/home");
+      router.replace("/(app)/getting-started");
     },
     onError: (error) => {
       if (error.response?.status === 422) {

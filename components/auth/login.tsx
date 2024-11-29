@@ -1,5 +1,5 @@
 import React from "react";
-import { ActivityIndicator, Text, TextInput, View } from "react-native";
+import { ActivityIndicator, Alert, Text, TextInput, View } from "react-native";
 import { useSession } from "@/context/session-ctx";
 import { login } from "@/services/api/authentication";
 import { Credentials } from "@/types/authentication";
@@ -37,9 +37,16 @@ export default function Login() {
     mutationFn: (formData: Credentials) => login(formData),
     onSuccess: (data) => {
       signIn(data.token);
-      router.replace("/home");
+      if (false) {
+        router.replace("/(organisation)/");
+      } else {
+        router.replace("/home");
+      }
     },
     onError: (error) => {
+      if (error.isAxiosError) {
+        Alert.alert("Check your internet!");
+      }
       if (error.response?.status === 422) {
         const { errors } = error.response.data;
         Object.entries(errors).forEach(([field, messages]) => {

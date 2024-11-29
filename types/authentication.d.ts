@@ -23,7 +23,7 @@ interface UpdateInformationData {
 }
 
 type AuthContext =
-  | { isLoading: true; user: null }
-  | { isLoading: false; user: User };
+  | { isUserLoading: true; user: null }
+  | { isUserLoading: false; user: User };
 
 export { Credentials, RegistrationData, AuthContext, UpdateInformationData };

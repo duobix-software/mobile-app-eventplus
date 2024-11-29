@@ -9,7 +9,6 @@ export default function Payment() {
 
   const handleNavigationChange = (navigationState: WebViewNavigation) => {
     const { url: currentUrl } = navigationState;
-    console.log(currentUrl);
     if (currentUrl.includes("/api/v1/payment/success")) {
       router.replace("/checkout/success");
       return;

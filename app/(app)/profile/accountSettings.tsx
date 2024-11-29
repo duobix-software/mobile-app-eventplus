@@ -6,9 +6,9 @@ import DeleteProfile from "@/components/profile/deleteProfile";
 import UpdateInformations from "@/components/profile/updateInformations";
 
 export default function accontSettings() {
-  const { user, isLoading } = useUser();
+  const { user, isUserLoading } = useUser();
 
-  if (isLoading) {
+  if (isUserLoading) {
     return (
       <View className="h-full flex justify-center">
         <ActivityIndicator size="large" color={"#007BFF"}></ActivityIndicator>
