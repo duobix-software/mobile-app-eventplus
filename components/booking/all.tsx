@@ -8,7 +8,8 @@ import { ScrollView, Text, TouchableOpacity, View } from "react-native";
 export default function AllBookings() {
   const { data, status } = useInfiniteQuery({
     queryKey: ["orders", "all"],
-    queryFn: async ({ pageParam }) => getOrders({ urlTemplateParams: { page: pageParam } }),
+    queryFn: async ({ pageParam }) =>
+      getOrders({ urlTemplateParams: { page: pageParam } }),
     initialPageParam: 1,
     getNextPageParam: (lastpage, pages, lastPageParam) => {
       if (!lastpage.links.next) return undefined;
@@ -32,24 +33,36 @@ export default function AllBookings() {
                   activeOpacity={0.8}
                   className="bg-card rounded-lg px-4 py-2 overflow-hidden mb-2 w-full"
                   onPress={() =>
-                    router.push({
-                      pathname: "/bookings/[id]",
-                      params: {
-                        id: order.id,
-                        event: "lollapalooza-winter-edition",
-                      },
-                    })
+                    order.status == "Confirmed"
+                      ? router.push({
+                          pathname: "/bookings/[id]",
+                          params: {
+                            id: order.id,
+                            event: order.event.slug,
+                          },
+                        })
+                      : router.push({
+                          pathname: "/events/[slug]",
+                          params: { slug: order.event.slug },
+                        })
                   }
                 >
                   <View>
-                    <Text className="text-foreground text-lg">Event name</Text>
-                    <Text className="pl-0.5 text-foreground text-sm">
-                      10-12-2024
+                    <Text className="text-foreground text-lg">
+                      {order.event.title}
                     </Text>
-                    <View className="flex flex-row">
-                      <Ionicons name="location" size={16} color="#FF685C" />
-                      <Text className="pl-0.5 text-muted text-xs">
-                        Salle Atlas Alger, Algeria
+                    <Text className="pl-0.5 text-foreground text-sm">
+                      {order.event.date}
+                    </Text>
+                    <View className="flex flex-row justify-between items-center">
+                      <View className="flex flex-row">
+                        <Ionicons name="location" size={16} color="#FF685C" />
+                        <Text className="pl-0.5 text-muted text-xs">
+                          {order.event.address.address}
+                        </Text>
+                      </View>
+                      <Text className="text-sm text-muted">
+                        {order.status}{" "}
                       </Text>
                     </View>
                   </View>

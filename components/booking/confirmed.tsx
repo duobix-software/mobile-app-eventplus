@@ -35,19 +35,24 @@ export default function ConfirmedBookings() {
                   onPress={() =>
                     router.push({
                       pathname: "/bookings/[id]",
-                      params: { id: order.id },
+                      params: {
+                        id: order.id,
+                        event: order.event.slug,
+                      },
                     })
                   }
                 >
                   <View>
-                    <Text className="text-foreground text-lg">confirmed</Text>
+                    <Text className="text-foreground text-lg">
+                      {order.event.title}
+                    </Text>
                     <Text className="pl-0.5 text-foreground text-sm">
-                      10-12-2024
+                      {order.event.date}
                     </Text>
                     <View className="flex flex-row">
                       <Ionicons name="location" size={16} color="#FF685C" />
                       <Text className="pl-0.5 text-muted text-xs">
-                        Salle Atlas Alger, Algeria
+                        {order.event.address.address}
                       </Text>
                     </View>
                   </View>

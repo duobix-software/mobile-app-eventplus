@@ -34,20 +34,22 @@ export default function CanceledBookings() {
                   className="bg-card rounded-lg px-4 py-2 overflow-hidden mb-2 w-full"
                   onPress={() =>
                     router.push({
-                      pathname: "/bookings/[id]",
-                      params: { id: order.id },
+                      pathname: "/events/[slug]",
+                      params: { slug: order.event.slug },
                     })
                   }
                 >
                   <View>
-                    <Text className="text-foreground text-lg">confirmed</Text>
+                    <Text className="text-foreground text-lg">
+                      {order.event.title}
+                    </Text>
                     <Text className="pl-0.5 text-foreground text-sm">
-                      10-12-2024
+                      {order.event.date}
                     </Text>
                     <View className="flex flex-row">
                       <Ionicons name="location" size={16} color="#FF685C" />
                       <Text className="pl-0.5 text-muted text-xs">
-                        Salle Atlas Alger, Algeria
+                        {order.event.address.address}
                       </Text>
                     </View>
                   </View>
