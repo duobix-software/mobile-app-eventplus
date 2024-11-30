@@ -1,10 +1,7 @@
 import { useUser } from "@/context/authentication-ctx";
 import { useSession } from "@/context/session-ctx";
 import { Redirect } from "expo-router";
-import {
-  ActivityIndicator,
-  View,
-} from "react-native";
+import { ActivityIndicator, View } from "react-native";
 
 export default function Index() {
   const { session, isLoading } = useSession();

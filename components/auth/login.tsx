@@ -37,11 +37,7 @@ export default function Login() {
     mutationFn: (formData: Credentials) => login(formData),
     onSuccess: (data) => {
       signIn(data.token);
-      if (false) {
-        router.replace("/(organisation)/");
-      } else {
-        router.replace("/home");
-      }
+      router.replace("/");
     },
     onError: (error) => {
       if (error.isAxiosError) {
