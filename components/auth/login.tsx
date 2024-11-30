@@ -40,7 +40,7 @@ export default function Login() {
       router.replace("/");
     },
     onError: (error) => {
-      if (error.isAxiosError) {
+      if (error.code == "ERR_NETWORK") {
         Alert.alert("Check your internet!");
       }
       if (error.response?.status === 422) {

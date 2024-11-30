@@ -38,7 +38,6 @@ export default function AllBookings() {
                           pathname: "/bookings/[id]",
                           params: {
                             id: order.id,
-                            event: order.event.slug,
                           },
                         })
                       : router.push({

@@ -37,7 +37,6 @@ export default function ConfirmedBookings() {
                       pathname: "/bookings/[id]",
                       params: {
                         id: order.id,
-                        event: order.event.slug,
                       },
                     })
                   }

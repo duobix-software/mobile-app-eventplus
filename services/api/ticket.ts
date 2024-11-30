@@ -3,7 +3,7 @@ import { api } from "./api";
 
 async function getTicket(config: AxiosRequestConfig = {}) {
   const response = await api.get(
-    "/orders/{order}/events/{event}/ticket",
+    "/orders/{order}/ticket",
     config
   );
   return await response.data;

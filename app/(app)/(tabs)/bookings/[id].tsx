@@ -1,6 +1,7 @@
 import React from "react";
 import {
   ActivityIndicator,
+  Alert,
   Image,
   Text,
   TouchableOpacity,
@@ -19,7 +20,7 @@ import { Ionicons } from "@expo/vector-icons";
 import NfcManager, { NfcTech, Ndef } from "react-native-nfc-manager";
 
 export default function booking() {
-  const { id, event } = useLocalSearchParams<{ id: string; event: string }>();
+  const { id } = useLocalSearchParams<{ id: string }>();
   const insets = useSafeAreaInsets();
   const { data: order } = useQuery({
     queryKey: ["order", id],
@@ -27,35 +28,42 @@ export default function booking() {
   });
 
   const { data: ticket, status } = useQuery({
-    queryKey: ["ticket", event, id],
-    queryFn: () =>
-      getTicket({ urlTemplateParams: { order: id, event: event } }),
+    queryKey: ["ticket", id],
+    queryFn: () => getTicket({ urlTemplateParams: { order: id } }),
   });
 
   async function writeNdef(ticket: string) {
     let result = false;
+    const deviceIsSupported = await NfcManager.isSupported();
+    const notEnabled = await NfcManager.isEnabled();
+    if (deviceIsSupported) {
+      await NfcManager.start();
+    }
+    if (!notEnabled) {
+      NfcManager.goToNfcSetting();
+    }
     try {
       await NfcManager.requestTechnology(NfcTech.Ndef);
       const bytes = Ndef.encodeMessage([Ndef.textRecord(ticket)]);
+      console.log(bytes);
       if (bytes) {
-        const response = await NfcManager.ndefHandler.writeNdefMessage(bytes);
-        result = true;
+        await NfcManager.ndefHandler.writeNdefMessage(bytes);
+        Alert.alert("Ticket scanned!");
       }
     } catch (ex) {
-      console.log("Error writing to Nfc:", ex);
+      Alert.alert("Error while using NFC technology...");
     } finally {
       NfcManager.cancelTechnologyRequest();
     }
-    return result;
   }
 
   if (status === "success") {
-    writeNdef(ticket.publicToken);
+    writeNdef(ticket.token);
   }
 
   return (
     <SafeAreaView className=" h-full">
-      {status === "pending" && (
+      {status === "pending" && order && (
         <View className="flex justify-center items-center h-full">
           <ActivityIndicator size="large" className="text-primary" />
         </View>
@@ -64,7 +72,7 @@ export default function booking() {
         <View className="grow relative bg-background">
           <View className="h-64 relative">
             <Image
-              source={{ uri: order.event.banner }}
+              source={{ uri: order?.event.banner }}
               className="w-full h-full"
             />
             <View
@@ -89,9 +97,9 @@ export default function booking() {
 
           <View className="mx-4 mt-4">
             <Text className="text-foreground text-lg font-medium">
-              {order.event.title}
+              {order?.event.title}
             </Text>
-            {order.event.address && (
+            {order?.event.address && (
               <View className="flex-row items-center">
                 <Ionicons name="location-sharp" size={16} color="#ea580c" />
                 <Text className="text-foreground text-sm ml-1">

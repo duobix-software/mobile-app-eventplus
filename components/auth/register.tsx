@@ -1,6 +1,6 @@
 import React from "react";
 import { AxiosError } from "axios";
-import { ActivityIndicator, Text, TextInput, View } from "react-native";
+import { ActivityIndicator, Alert, Text, TextInput, View } from "react-native";
 import { useSession } from "@/context/session-ctx";
 import { register } from "@/services/api/authentication";
 import { RegistrationData } from "@/types/authentication";
@@ -44,6 +44,9 @@ export default function Register() {
       router.replace("/(app)/getting-started");
     },
     onError: (error) => {
+      if (error.code == "ERR_NETWORK") {
+        Alert.alert("Check your internet!");
+      }
       if (error.response?.status === 422) {
         const { errors } = error.response.data;
         Object.entries(errors).forEach(([field, messages]) => {
